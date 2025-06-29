@@ -59,11 +59,11 @@ class Taskly:
         data=request.get_json()
 
         cursor = self.conn.cursor()
-        task_id = data['id'] #extract values
-        title = data['title']
-        description = data['description']
-        status= data['status']
-        due_date = data['due_date']
+        task_id = data.get("id")
+        title = data.get("title")
+        description = data.get("description")
+        status = data.get("status")
+        due_date = data.get("due_date")
 
         if task_id is None or title is None or description is None or status is None or due_date is None:
             return jsonify({"error": "Missing required fields"}), 400
@@ -76,9 +76,17 @@ class Taskly:
         cursor = self.conn.cursor()  
         cursor.execute("SELECT * FROM tasks WHERE id = %s and created_by = %s", (task_id,user_id))#single tuple
         task = cursor.fetchone() 
+        task_dict = {
+            "id": task[0],
+            "title": task[1],
+            "description": task[2],
+            "status": task[3],
+            "due_date": task[4],
+            "created_at": task[5],
+        }
 
         if task:  
-            return jsonify({"task": task})
+            return jsonify({"task": task_dict}), 200
         else:  
             return jsonify({"error": "task not found"}), 404
 
