@@ -83,6 +83,8 @@ class Taskly:
         cursor.execute(query)
         pass_check_status = False
         token = ""
+        user = cursor.fetchone()
+        print("from db : ",user)
         for row in cursor:
             p = data.get("password")
             # p_assword = p.encode('utf-8')
