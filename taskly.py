@@ -84,28 +84,11 @@ class Taskly:
         pass_check_status = False
         token = ""
         user = cursor.fetchone()
-        # print("from db 0: ",user.keys())
         print("from db 1: ",user[3])
-        # print("from db 2 : ",user.get("password"))
-        # print("from db 0: ",user.values())
-        # print("from db 2 : ",user["password"])
-        # for key, value in user.items():  
-        #     print(f"{key}: {value}")
-        for row in cursor:
-            p = data.get("password")
-            # p_assword = p.encode('utf-8')
-            print("from request : ",p)
-            userBytes = p.encode('utf-8')
-            print("from request bytes : ",userBytes)
-            print("from db 0 : ",row)
-            print("from db 1 : ",str(row["password"]))
-            print("from db 2 : ",row["password"])
-            print("from db 3 : ",row['password'],bytes(row['password']))
-            pass_check_status = bcrypt.checkpw(p, bytes(row['password']))
-
-            # pass_check_status = bcrypt.checkpw(p_assword,bytes(row['password'], 'utf-8'))
-            # pass_check_status = bcrypt.checkpw(p_assword,bytes(row['password'], 'utf-8'))
-            token = jwt.encode({'id': row["id"], 'exp': datetime.now(timezone.utc) + timedelta(hours=1)},
+        p = data.get("password")
+        p_assword = p.encode('utf-8')
+        pass_check_status = bcrypt.checkpw(p_assword,bytes(user[3], 'utf-8'))
+        token = jwt.encode({'id': user[0], 'exp': datetime.now(timezone.utc) + timedelta(hours=1)},
                            self.config['SECRET_KEY'], algorithm="HS256")
                 
         return jsonify({"login": pass_check_status, "token": token})
