@@ -74,6 +74,10 @@ def login():
     taskly = Taskly()
     return taskly.login(request)
 
+@app.route('/',methods=['GET'])
+def home():
+    return jsonify({'message': 'Welcome to Taskly API!'}), 200
+
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)#Starts the Flask
