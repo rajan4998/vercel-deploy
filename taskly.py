@@ -78,7 +78,7 @@ class Taskly:
     def login(self,request=None):
         data=request.json
         email = data.get("email")  
-        cursor = self.conn.cursor(dictionary=True)  # Use dictionary=True for named access
+        cursor = self.conn.cursor()  # Use dictionary=True for named access
         query = "SELECT * FROM users WHERE email = '" + str(email) + "'"
         cursor.execute(query)
         pass_check_status = False
