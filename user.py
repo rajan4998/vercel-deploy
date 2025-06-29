@@ -16,14 +16,14 @@ class User:
         username = data.get("username")
         email = data.get("email")
         password = data.get("password") 
-        mySalt = bcrypt.gensalt(14)
+        mySalt = bcrypt.gensalt()
         bytePwd = password.encode('utf-8')
         hash_pass = bcrypt.hashpw(bytePwd, mySalt)
-
+        password_hash = hash_pass.decode('utf8')
         cursor = self.conn.cursor()
 
         sql= "insert into users (username, email, password) values(%s, %s, %s)"
-        values = (username, email, hash_pass)
+        values = (username, email, password_hash)
         cursor.execute(sql, values)
         self.conn.commit()
         return jsonify({"message": "User added successfully!"})
