@@ -85,8 +85,8 @@ class Taskly:
         token = ""
         for row in cursor:
             p = data.get("password")
-            p_assword = p.encode('utf-8')
-            userBytes = p_assword.encode('utf-8')
+            # p_assword = p.encode('utf-8')
+            userBytes = p.encode('utf-8')
             pass_check_status = bcrypt.checkpw(userBytes, row['password'])
 
 
