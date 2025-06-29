@@ -86,7 +86,12 @@ class Taskly:
         for row in cursor:
             p = data.get("password")
             p_assword = p.encode('utf-8')
-            pass_check_status = bcrypt.checkpw(p_assword,bytes(row['password'], 'utf-8'))
+            userBytes = p_assword.encode('utf-8')
+            pass_check_status = bcrypt.checkpw(userBytes, row['password'])
+
+
+            # pass_check_status = bcrypt.checkpw(p_assword,bytes(row['password'], 'utf-8'))
+            # pass_check_status = bcrypt.checkpw(p_assword,bytes(row['password'], 'utf-8'))
             token = jwt.encode({'id': row["id"], 'exp': datetime.now(timezone.utc) + timedelta(hours=1)},
                            self.config['SECRET_KEY'], algorithm="HS256")
                 
