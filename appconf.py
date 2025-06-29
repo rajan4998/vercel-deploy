@@ -10,7 +10,7 @@ class AppConfig:
         #     password="npg_pxHh86OMEAeB",  
         #     database="neondb"
         # )
-        self.conn = psycopg2.connect("postgres://0197bb82-647f-7268-9bb8-b4202cee5de2:fd07b846-19a8-461d-928c-a7adfe72fe45@us-west-2.db.thenile.dev/nile_yellow_garden", autocommit=True)
+        self.conn = psycopg2.connect("postgres://0197bb82-647f-7268-9bb8-b4202cee5de2:fd07b846-19a8-461d-928c-a7adfe72fe45@us-west-2.db.thenile.dev/nile_yellow_garden")
         self.app = None  # Placeholder for Flask app instance
         self.app = Flask(__name__)
         self.app.config['SECRET_KEY'] = '3o374eoxq0qiou4'  # Secret key for session management
