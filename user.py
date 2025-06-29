@@ -16,7 +16,7 @@ class User:
         username = data.get("username")
         email = data.get("email")
         password = data.get("password") 
-        mySalt = bcrypt.gensalt()
+        mySalt = bcrypt.gensalt(14)
         bytePwd = password.encode('utf-8')
         hash_pass = bcrypt.hashpw(bytePwd, mySalt)
 
