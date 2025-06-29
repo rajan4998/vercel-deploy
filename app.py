@@ -19,6 +19,8 @@ def token_required(f):
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
             current_user = User().get_user_by_id(data['id'])
+            print("current_user: ", current_user)
+            print("current_user 2: ", current_user.json.get('user', {}))
             user_id = current_user.json.get('user', {}).get('id')
         except:
             return jsonify({'message': 'Token is invalid!'}), 401

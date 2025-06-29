@@ -33,7 +33,7 @@ class User:
         cursor.execute("SELECT id, username, email FROM users WHERE id = %s", (user_id,))
         user = cursor.fetchone()
         if user:
-            return jsonify({"user": user})
+            return jsonify({"user": user[0]})
         else:
             return jsonify({"message": "User not found"}), 404
 
