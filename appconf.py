@@ -4,10 +4,10 @@ from flask import Flask,request
 class AppConfig:
     def __init__(self):
         self.conn = mysql.connector.connect(
-            host="localhost",    
-            user="root",         
-            password="",  
-            database="task_manager"
+            host="ep-yellow-tree-a4zfakw4-pooler.us-east-1.aws.neon.tech",
+            user="neondb_owner",         
+            password="npg_pxHh86OMEAeB",  
+            database="neondb"
         )
         self.app = None  # Placeholder for Flask app instance
         self.app = Flask(__name__)
