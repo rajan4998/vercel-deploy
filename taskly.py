@@ -78,13 +78,13 @@ class Taskly:
     def login(self,request=None):
         data=request.json
         email = data.get("email")  
-        cursor = self.conn.cursor()  
+        cursor = self.conn.cursor(dictionary=True)  # Use dictionary=True for named access
         query = "SELECT * FROM users WHERE email = '" + str(email) + "'"
         cursor.execute(query)
         pass_check_status = False
         token = ""
         user = cursor.fetchone()
-        print("from db 0: ",user.keys())
+        # print("from db 0: ",user.keys())
         print("from db 1: ",user)
         print("from db 2 : ",user.get("password"))
         print("from db 0: ",user.values())
