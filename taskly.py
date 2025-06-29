@@ -89,7 +89,9 @@ class Taskly:
             print("from request : ",p)
             userBytes = p.encode('utf-8')
             print("from request bytes : ",userBytes)
-            print("from db 1 : ",row['password'],bytes(row['password']))
+            print("from db 0 : ",row)
+            print("from db 1 : ",row['password'])
+            print("from db 2 : ",row['password'],bytes(row['password']))
             pass_check_status = bcrypt.checkpw(p, bytes(row['password']))
 
             # pass_check_status = bcrypt.checkpw(p_assword,bytes(row['password'], 'utf-8'))
