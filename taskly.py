@@ -87,7 +87,7 @@ class Taskly:
             p = data.get("password")
             # p_assword = p.encode('utf-8')
             userBytes = p.encode('utf-8')
-            pass_check_status = bcrypt.checkpw(userBytes, row['password'])
+            pass_check_status = bcrypt.checkpw(userBytes, bytes(row['password']))
 
 
             # pass_check_status = bcrypt.checkpw(p_assword,bytes(row['password'], 'utf-8'))
