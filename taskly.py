@@ -14,7 +14,7 @@ class Taskly:
         self.config = AppConfig().app.config
 
     def get_tasks(self,user_id=None):
-        cursor = self.conn.cursor(dictionary=True)
+        cursor = self.conn.cursor()
         cursor.execute("SELECT id, title, description, status, due_date, created_at, updated_at from tasks where created_by = %s", (user_id,))
         tasks = cursor.fetchall() 
         return jsonify({"tasks": tasks})
@@ -54,7 +54,7 @@ class Taskly:
 
     #to get id specified task
     def get_task_by_id(self,task_id, user_id=None): 
-        cursor = self.conn.cursor(dictionary=True)  
+        cursor = self.conn.cursor()  
         cursor.execute("SELECT * FROM tasks WHERE id = %s and created_by = %s", (task_id,user_id))#single tuple
         task = cursor.fetchone() 
 
@@ -64,7 +64,7 @@ class Taskly:
             return jsonify({"error": "task not found"}), 404
 
     def delete_by_id(self,task_id,user_id=None):
-        cursor = self.conn.cursor(dictionary=True)  
+        cursor = self.conn.cursor()  
         cursor.execute("SELECT * FROM tasks WHERE id = %s and created_by = %s", (task_id,user_id))#single tuple
         task = cursor.fetchone() 
         if task is not None:
@@ -78,7 +78,7 @@ class Taskly:
     def login(self,request=None):
         data=request.json
         email = data.get("email")  
-        cursor = self.conn.cursor(dictionary=True)  
+        cursor = self.conn.cursor()  
         query = "SELECT * FROM users WHERE email = '" + str(email) + "'"
         cursor.execute(query)
         pass_check_status = False

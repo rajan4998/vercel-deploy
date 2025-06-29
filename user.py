@@ -29,7 +29,7 @@ class User:
         return jsonify({"message": "User added successfully!"})
     
     def get_user_by_id(self, user_id=None):
-        cursor = self.conn.cursor(dictionary=True)
+        cursor = self.conn.cursor()
         cursor.execute("SELECT id, username, email FROM users WHERE id = %s", (user_id,))
         user = cursor.fetchone()
         if user:
