@@ -3,6 +3,6 @@ gunicorn
 flask_cors
 mysql-connector-python
 requests
-jwt
+PyJWT
 bcrypt
 psycopg2-binary
