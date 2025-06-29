@@ -17,7 +17,26 @@ class Taskly:
         cursor = self.conn.cursor()
         cursor.execute("SELECT id, title, description, status, due_date, created_at, updated_at from tasks where created_by = %s", (user_id,))
         tasks = cursor.fetchall() 
-        return jsonify({"tasks": tasks})
+        cursor.close()
+        self.conn.close()
+        if not tasks:
+            return jsonify({"message": "No tasks found"}), 404
+        response = []
+        for task in tasks:
+            task_dict = {
+                "id": task[0],
+                "title": task[1],
+                "description": task[2],
+                "status": task[3],
+                "due_date": task[4],
+                "created_at": task[5],
+            }
+            # Convert datetime objects to ISO format strings
+            for key in ["due_date", "created_at"]:
+                if isinstance(task_dict[key], datetime):
+                    task_dict[key] = task_dict[key].isoformat()
+        response.append(task_dict)
+        return jsonify({"tasks": response}), 200
 
     def add_task(self, request=None,user_id=None):
         data=request.json
@@ -84,7 +103,6 @@ class Taskly:
         pass_check_status = False
         token = ""
         user = cursor.fetchone()
-        print("from db 1: ",user[3])
         p = data.get("password")
         p_assword = p.encode('utf-8')
         pass_check_status = bcrypt.checkpw(p_assword,bytes(user[3], 'utf-8'))
