@@ -6,12 +6,14 @@ import jwt
 from datetime import datetime, timezone, timedelta
 from functools import wraps
 from appconf import AppConfig
+from transformers import pipeline
 
 class Taskly:
 
     def __init__(self):
         self.conn = AppConfig().conn
         self.config = AppConfig().app.config
+        self.generator = pipeline("text2text-generation", model="google/flan-t5-small")
 
     def get_tasks(self,user_id=None):
         cursor = self.conn.cursor()
@@ -53,7 +55,7 @@ class Taskly:
         task_id = cursor.lastrowid
         cursor.close()
         self.conn.close()
-        return jsonify({"message": "Task added successfully", "task_id": task_id}), 201
+        return jsonify({"message": "Task added successfully"}), 201
 
     def update_task(self,request,user_id=None):
         data=request.get_json()
@@ -76,6 +78,8 @@ class Taskly:
         cursor = self.conn.cursor()  
         cursor.execute("SELECT * FROM tasks WHERE id = %s and created_by = %s", (task_id,user_id))#single tuple
         task = cursor.fetchone() 
+        if task is None:
+            return jsonify({"error": "Task not found"}), 404
         task_dict = {
             "id": task[0],
             "title": task[1],
@@ -118,3 +122,17 @@ class Taskly:
                            self.config['SECRET_KEY'], algorithm="HS256")
                 
         return jsonify({"login": pass_check_status, "token": token})
+
+    def copilot_suggest(self, request):
+        data = request.json
+        input_text = data.get("input", "")
+        prompt = f"Help me with: {input_text}"
+
+        try:
+            result = self.generator(prompt, max_new_tokens=100)
+            response = jsonify({"answer": result[0]["generated_text"]})
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
